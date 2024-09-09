@@ -1,1 +1,201 @@
-/* write css here */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  height: 100vh;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.container-main {
+  max-width: 130rem;
+  margin: 3rem auto;
+  box-shadow: 0 5px 5px #3b3b3b33;
+}
+
+.header {
+  font-size: 2rem;
+  text-align: center;
+  padding: 1.2rem;
+  background-image: linear-gradient(20deg, #dabfff, #9d4edd, #dabfff);
+  color: #fff;
+}
+.main {
+  padding: 4rem 2rem 2rem 2rem;
+  background: #edecec76;
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.input-grp label {
+  font-size: 1.4rem;
+}
+
+.input-grp input,
+.input-grp select {
+  margin-top: 1rem;
+  width: 23rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+}
+
+.filterExpForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.filterExpForm label {
+  font-size: 1.4rem;
+}
+
+.filterExpForm select {
+  width: 25rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 0.1rem solid #989898;
+  margin-bottom: 2rem;
+}
+
+.table-head th,
+.body-row td {
+  border: 0.1rem solid #989898;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.table-head th {
+  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
+  color: #fff;
+}
+
+.total {
+  font-size: 1.6rem;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.add-btn {
+  margin-top: 2.5rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .5s;
+}
+.add-btn:hover{
+    background-image: linear-gradient(to bottom, #9d4edd, #9d4edd);
+    transform: scale(1.05);
+}
+.delete-btn {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .5s;
+}
+.delete-btn:hover{
+    background-color: #e84533;
+    transform: scale(1.05);
+}
+
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (max-width: 64em) {
+    .container-main {
+        margin: 3rem 2rem;
+      }
+  .input-grp input,
+  .input-grp select {
+    width: 16rem;
+  }
+}
+
+@media only screen and (max-width: 48em) {
+  html {
+    font-size: 43.7%;
+  }
+  .grid-input-l {
+    width: 48%;
+  }
+  .grid-input-s {
+    width: 38%;
+  }
+  .input-grp input,
+  .input-grp select {
+    width: 93%;
+  }
+}
+
+@media only screen and (max-width: 34.36em) {
+  .input-grp {
+    width: 100%;
+  }
+  .input-grp input {
+    width: 96.5%;
+  }
+  .input-grp select {
+    width: 100%;
+  }
+  .add-btn {
+    margin-top: 0;
+    width: 100%;
+  }
+  .table-head th,
+  .body-row td {
+    font-size: 1.2rem;
+    padding: 0.4rem 1rem;
+  }
+  .delete-btn {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+  }
+  .delete-text {
+    display: none;
+  }
+  .filterExpForm select {
+    width: 22.3rem;
+  }
+  .container-main {
+    margin: 0;
+  }
+}
