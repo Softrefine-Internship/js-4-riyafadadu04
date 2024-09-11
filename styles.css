@@ -20,21 +20,36 @@ body::-webkit-scrollbar {
 }
 
 .container-main {
-  max-width: 130rem;
-  margin: 3rem auto;
-  box-shadow: 0 5px 5px #3b3b3b33;
+  width: 100vw;
+  height: 100vh;
+  background: #edecec76;
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 2rem;
-  text-align: center;
-  padding: 1.2rem;
-  background-image: linear-gradient(20deg, #dabfff, #9d4edd, #dabfff);
+  padding: 1.2rem 2rem;
+  background-image: linear-gradient(20deg, #9d4edd, #dabfff, #9d4edd);
   color: #fff;
 }
+.header--controls {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.tablinks{
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  cursor: pointer;
+  transition: all .5s;
+}
+.tablinks:active, .tablinks:hover{
+  background-color: #f9f9fa39;
+}
 .main {
-  padding: 4rem 2rem 2rem 2rem;
-  background: #edecec76;
+  padding: 4rem 2rem;
 }
 .form {
   display: flex;
@@ -64,6 +79,14 @@ body::-webkit-scrollbar {
   align-items: center;
   gap: 2rem;
   margin-bottom: 2rem;
+}
+
+.categoryForm{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .filterExpForm label {
@@ -98,6 +121,14 @@ body::-webkit-scrollbar {
   color: #fff;
 }
 
+.cat-action{
+  width: 30rem;
+}
+
+.cat-index{
+  width: 10rem;
+}
+
 .total {
   font-size: 1.6rem;
   text-align: left;
@@ -113,25 +144,43 @@ body::-webkit-scrollbar {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: all .5s;
+  transition: all 0.5s;
 }
-.add-btn:hover{
-    background-image: linear-gradient(to bottom, #9d4edd, #9d4edd);
-    transform: scale(1.05);
-}
-.delete-btn {
+.add-btn-cat{
   padding: 0.8rem 1.6rem;
   font-size: 1.4rem;
-  background-color: #e74c3c;
+  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: all .5s;
+  transition: all 0.5s;
 }
-.delete-btn:hover{
-    background-color: #e84533;
-    transform: scale(1.05);
+.add-btn:hover {
+  background-image: linear-gradient(to bottom, #9d4edd, #9d4edd);
+  transform: scale(1.05);
+}
+.action-btn {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: .5rem;
+  cursor: pointer;
+  transition: all 0.5s;
+  color: #fff;
+}
+
+.action-btn:hover {
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  margin-right: 1rem;
+}
+
+.edit-btn {
+  background-color: #0ff10f;
 }
 
 @media only screen and (max-width: 75em) {
@@ -141,9 +190,6 @@ body::-webkit-scrollbar {
 }
 
 @media only screen and (max-width: 64em) {
-    .container-main {
-        margin: 3rem 2rem;
-      }
   .input-grp input,
   .input-grp select {
     width: 16rem;
@@ -185,17 +231,54 @@ body::-webkit-scrollbar {
     font-size: 1.2rem;
     padding: 0.4rem 1rem;
   }
-  .delete-btn {
+  .action-btn {
     padding: 0.6rem 1rem;
     font-size: 1rem;
-  }
-  .delete-text {
-    display: none;
   }
   .filterExpForm select {
     width: 22.3rem;
   }
-  .container-main {
-    margin: 0;
+}
+
+@media only screen and (max-width: 34.36em) {
+  .input-grp {
+    width: 100%;
+  }
+  .input-grp input {
+    width: 96.5%;
+  }
+  .input-grp select {
+    width: 100%;
+  }
+  .add-btn {
+    margin-top: 0;
+    width: 100%;
+  }
+  .table-head th,
+  .body-row td {
+    font-size: 1.2rem;
+    padding: 0.4rem 1rem;
+  }
+  .action-btn {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+  }
+  .filterExpForm select {
+    width: 22.3rem;
+  }
+}
+
+@media only screen and (max-width: 23.43em) {
+  .table-head th,
+  .body-row td {
+    font-size: 1.1rem;
+    padding: 0.4rem 1rem;
+  }
+  .action-btn {
+    padding: 0.5rem 0.9rem;
+  border-radius: .3rem;
+  }
+  .delete-btn {
+    margin-right: 0.5rem;
   }
 }
