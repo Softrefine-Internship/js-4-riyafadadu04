@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/0e9195495d.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/0e9195495d.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="script.js"></script>
     <title>Expense Tracker</title>
@@ -11,54 +14,81 @@
   <body>
     <div class="container-main">
       <header class="header">
-        <h1 class="header--name">Expense Tracker App</h1>
+        <h1 class="header--name">Expense Tracker</h1>
         <div class="header--controls">
           <div class="tablinks">Expense</div>
           <div class="tablinks">Category</div>
         </div>
       </header>
       <main class="main">
-        <div class="Expense-container tab-content" id="expenseContainer Expense">
+        <div
+          class="Expense-container tab-content"
+          id="expenseContainer Expense"
+        >
           <form class="form" id="expenseForm">
             <div class="input-grp grid-input-l">
-              <label for="expenseName">Expense Name :</label> <br>
+              <label for="expenseName">Expense Name :</label> <br />
               <input
-              type="text"
-              id="expenseName"
-              placeholder="Expense Name"
-              required
-            />
+                type="text"
+                id="expenseName"
+                placeholder="Expense Name"
+                required
+              />
             </div>
             <div class="input-grp grid-input-l">
-              <label for="expenseAmount">Expense Amount :</label> <br>
+              <label for="expenseAmount">Expense Amount :</label> <br />
               <input
-              type="number"
-              id="expenseAmount"
-              placeholder="Amount"
-              min="0.01"
-              step="0.01"
-              required />
+                type="number"
+                id="expenseAmount"
+                placeholder="Amount"
+                min="0.01"
+                step="0.01"
+                required
+              />
             </div>
             <div class="input-grp grid-input-s">
-              <label for="expenseDate">Expense Date :</label> <br>
+              <label for="expenseDate">Expense Date :</label> <br />
               <input type="date" id="expenseDate" required />
             </div>
             <div class="input-grp grid-input-s">
-              <label for="expenseCategory">Expense Category :</label> <br>
-              <select id="expenseCategory" class="expenseCategorySelect" required>
+              <label for="expenseCategory">Expense Category :</label> <br />
+              <select
+                id="expenseCategory"
+                class="expenseCategorySelect"
+                required
+              >
                 <option value="" disabled selected>Select Category</option>
               </select>
             </div>
-            <button type="submit" id="add-expense-btn" class="add-btn">Add Expense</button>
+            <button type="submit" id="add-expense-btn" class="add-btn">
+              Add Expense
+            </button>
           </form>
           <form class="filterExpForm">
-            <label for="filterExpence">Filter Expense By Category:</label>
-              <select name="inputExpence" id="filterExpence" class="expenseCategorySelect">
-                  <option value="" disabled selected>Select Expense</option>
-                  <option value="all">All</option>
+            <div class="input-grp-filter cat-input-form">
+              <label for="filterExpence">Filter Expense By Category:</label>
+              <select
+                name="inputExpence"
+                id="filterExpence"
+                class="expenseCategorySelect"
+              >
+                <option value="" disabled selected>Select Expense Category</option>
+                <option value="all">All</option>
               </select>
+            </div>
+            <div class="input-grp-search ">
+              <label for="searchExpense" class="catInputLable"
+                >Search Expense By Name:</label
+              >
+              <input
+                type="text"
+                id="searchExpense"
+                class="catInputFiled"
+                placeholder="Search Expense name"
+              />
+            </div>
           </form>
-          <table class="table"  id="expenseTable">
+          <table class="table" id="expenseTable">
             <thead>
               <tr class="table-head">
                 <th>No.</th>
@@ -81,25 +111,83 @@
             <div class="input-grp grid-input-l">
               <label for="categoryName">Category Name :</label>
               <input
-              type="text"
-              id="categoryName"
-              placeholder="Category Name"
-              required
-            />
-          </div>
-            <button type="submit" id="add-category-btn" class="add-btn-cat">Add Category</button>
+                type="text"
+                id="categoryName"
+                placeholder="Category Name"
+                required
+              />
+            </div>
+            <button type="submit" id="add-category-btn" class="add-btn-cat">
+              Add Category
+            </button>
           </form>
-          <table class="table"  id="expenseTable">
+          <form class="CategoryFilterForm">
+            <div class="input-grp cat-input-form">
+              <label for="filterCategory" class="catInputLable"
+                >Search Category By Name:</label
+              >
+              <input
+                type="text"
+                id="filterCategory"
+                class="catInputFiled"
+                placeholder="Search Category"
+              />
+            </div>
+          </form>
+          <table class="table myTable" id="expenseTable">
             <thead>
               <tr class="table-head">
-                <th class="cat-index">No.</th>
-                <th>Name</th>
-                <th class="cat-action">Action</th>
+                <th class="cat-index sort-btn">No.</th>
+                <th class="cat-name sort-btn">Name</th>
+                <th class="cat-action sort-btn">Action</th>
               </tr>
             </thead>
             <tbody id="categoryList" class="table-body"></tbody>
           </table>
         </div>
+        <div class="modal-container">
+          <div class="modal hidden">
+            <form class="formUpdate modal-content" id="expenseFormUpdate">
+              <div class="formUpdate-input-grp">
+                <label for="expenseName">Expense Name :</label> <br />
+                <input
+                  type="text"
+                  id="expenseNameUpdate"
+                  placeholder="Expense Name"
+                  required
+                />
+              </div>
+              <div class="formUpdate-input-grp">
+                <label for="expenseAmount">Expense Amount :</label> <br />
+                <input
+                  type="number"
+                  id="expenseAmountUpdate"
+                  placeholder="Amount"
+                  min="0.01"
+                  step="0.01"
+                  required
+                />
+              </div>
+              <div class="formUpdate-input-grp">
+                <label for="expenseDate">Expense Date :</label> <br />
+                <input type="date" id="expenseDateUpdate" required />
+              </div>
+              <div class="formUpdate-input-grp">
+                <label for="expenseCategory">Expense Category :</label> <br />
+                <select
+                  id="expenseCategory"
+                  class="expenseCategorySelect"
+                  required
+                >
+                  <option value="" disabled selected>Select Category</option>
+                </select>
+              </div>
+              <button type="submit" id="update-expense-btn" class="add-btn">
+                Update Expense
+              </button>
+            </form>
+          </div>
+        <div class="overlay hidden"></div>
       </main>
     </div>
   </body>

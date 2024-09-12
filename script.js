@@ -28,8 +28,6 @@ function showTab(tabId) {
   });
 }
 
-
-
 //--- for category ---//
 const categoryForm = document.querySelector('#categoryForm');
 
@@ -56,8 +54,11 @@ const updateTableCategory = (filteredCategory = category) => {
     newRowCat.classList.add('body-row');
     newRowCat.innerHTML = `
       <td class="cat-index">${index + 1}</td>
-      <td>${category.name}</td>
-      <td class="action-del cat-action"><button class="delete-btn action-btn" data-index="${index}"><i class="fa-solid fa-trash"></i></button><button class="edit-btn action-btn" data-index="${index}"><i class="fa-regular fa-pen-to-square"></i></button></td>
+      <td class="cat-name-td">${category.name}</td>
+      <td class="action-del cat-action">
+        <button class="delete-btn action-btn" data-index="${index}"><i class="fa-solid fa-trash"></i></button>
+        <button class="edit-btn action-btn" data-index="${index}"><i class="fa-regular fa-pen-to-square"></i></button>
+      </td>
     `;
     categoryTable.appendChild(newRowCat);
   });
@@ -69,11 +70,43 @@ const deleteCategory = index => {
   saveExpenses();
 };
 
+const editCategory = index => {
+  const oldCategory = category[index].name;
+  const catName = document.getElementsByClassName('cat-name-td')[index];
+  catName.innerHTML = `<form id="catInputUpdate">
+    <input type="text" class="edit-input" value="${oldCategory}">
+    <button type='submit' class='submit-btn'><i class="fa-solid fa-check"></i></button>
+  </form>`;
+  const catNameForm = document.querySelector('#catInputUpdate');
+  catNameForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const newName = document.querySelector('.edit-input').value;
+    editCategoryName(index, newName, oldCategory);
+    catNameForm.reset();
+  });
+};
+
+const editCategoryName = (index, newName, oldCategory) => {
+  category[index].name = newName;
+  expenses.forEach(expense => {
+    if (expense.category === oldCategory) {
+      expense.category = newName;
+    }
+  });
+  updateTableCategory();
+  updateTable();
+  saveExpenses();
+};
+
 const categoryTable = document.querySelector('#categoryList');
 categoryTable.addEventListener('click', e => {
   if (e.target.classList.contains('delete-btn')) {
     const index = e.target.getAttribute('data-index');
     deleteCategory(index);
+  }
+  if (e.target.classList.contains('edit-btn')) {
+    const index = e.target.getAttribute('data-index');
+    editCategory(index);
   }
 });
 
@@ -102,10 +135,10 @@ const updateTable = (filteredExpenses = expenses) => {
     newRow.classList.add('body-row');
     newRow.innerHTML = `
       <td>${index + 1}</td>
-      <td>${expense.name}</td>
-      <td>&#x20b9; ${expense.amount}</td>
-      <td>${expense.date}</td>
-      <td>${expense.category}</td>
+      <td class='exp-td-name'>${expense.name}</td>
+      <td class='exp-td-amount'>&#x20b9; ${expense.amount}</td>
+      <td class='exp-td-date'>${expense.date}</td>
+      <td class='exp-td-category'>${expense.category}</td>
       <td class="action-del"><button class="delete-btn action-btn" data-index="${index}"><i class="fa-solid fa-trash"></i></button><button class="edit-btn action-btn" data-index="${index}"><i class="fa-regular fa-pen-to-square"></i></button></td>
     `;
     expenseTable.appendChild(newRow);
@@ -194,6 +227,134 @@ expenseTable.addEventListener('click', e => {
     const index = e.target.getAttribute('data-index');
     deleteExpense(index);
   }
+  if (e.target.classList.contains('edit-btn')) {
+    const index = e.target.getAttribute('data-index');
+    editExpense(index);
+  }
 });
+function openModal(index) {
+  const btn = document.querySelectorAll(".edit-btn")[index];
+  const overlay = document.querySelector(".overlay");
+  const modal = document.querySelector(".modal");
+  const updateBtn = document.querySelector("#update-expense-btn");
+  
+  const openModal = function () {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  };
+  
+  const closeModal = function () {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  };
+  
+  btn.addEventListener("click", openModal);
+  overlay.addEventListener('click', closeModal);
+  updateBtn.addEventListener('click', closeModal);
+}
+const editExpense = index => {
+  openModal(index);
+  const expenseNameUpdate = document.querySelector('#expenseNameUpdate');
+  const expenseAmountUpdate = document.querySelector('#expenseAmountUpdate');
+  const expenseDateUpdate = document.querySelector('#expenseDateUpdate');
+  const expenseCategoryUpdate = document.querySelector('.formUpdate #expenseCategory');
+  const expenseFormUpdate = document.querySelector('#expenseFormUpdate');
+
+  expenseCategoryUpdate.innerHTML = '';
+  category.forEach(category => {
+    const newOption = document.createElement('option');
+    newOption.value = category.name;
+    newOption.textContent = category.name;
+    expenseCategoryUpdate.appendChild(newOption);
+  });
+
+  expenseNameUpdate.value = expenses[index].name;
+  expenseAmountUpdate.value = expenses[index].amount;
+  expenseDateUpdate.value = expenses[index].date;
+  expenseCategoryUpdate.value = expenses[index].category;
+
+  expenseFormUpdate.addEventListener('submit', e => {
+    e.preventDefault();
+    const newName = expenseNameUpdate.value;
+    const newAmount = expenseAmountUpdate.value;
+    const newDate = expenseDateUpdate.value;
+    const newCategory = expenseCategoryUpdate.value;
+
+    editExpenseName(index, newName,newAmount, newDate,newCategory);
+    closeModal();
+  });
+};
+
+const editExpenseName = (index, newName, newAmount, newDate, newCategory) => {
+  expenses[index].name = newName;
+  expenses[index].amount = parseFloat(newAmount);
+  expenses[index].date = newDate;
+  expenses[index].category = newCategory;
+  updateTable();
+  saveExpenses();
+};
+
+//--------- Searching ------------
+const filterCategoryInput = document.getElementById('filterCategory');
+filterCategoryInput.addEventListener('input', handleCategoryFilter);
+
+const searchExpense = document.getElementById('searchExpense');
+searchExpense.addEventListener('input', handleCategoryFilter);
+
+function handleCategoryFilter() {
+  const filterText = filterCategoryInput.value.toLowerCase();
+  const filteredCategories = category.filter(cat =>
+    cat.name.toLowerCase().includes(filterText)
+  );
+  updateTableCategory(filteredCategories);
+
+  const searchText = searchExpense.value.toLowerCase();
+  const filteredExpenses = expenses.filter(exp =>
+    exp.name.toLowerCase().includes(searchText)
+  );
+  updateTable(filteredExpenses);
+}
+
+handleCategoryFilter();
+
+//--------- sorting table each column in assending and decending order ----------------
+// const sortOrder = 'asc';
+
+// document.querySelectorAll('.sort-btn').forEach((btn, index) => {
+//   console.log(btn);
+//   btn.addEventListener('click', () => {
+//     const columnIndex = index;
+//     sortTable(columnIndex, sortOrder);
+//     sortOrder = sortOrder === 'asc'? 'desc' : 'asc';
+//     btn.classList.toggle('asc-sort', sortOrder === 'asc');
+//     btn.classList.toggle('desc-sort', sortOrder === 'desc');
+//   });
+// });
+
+// const sortTable = (columnIndex, sortOrder) => {
+//   category.sort((a, b) => {
+//     const valA = a[columnIndex].toUpperCase();
+//     const valB = b[columnIndex].toUpperCase();
+
+//     if (sortOrder === 'asc') {
+//       if (valA < valB) {
+//         return -1;
+//       }
+//       if (valA > valB) {
+//         return 1;
+//       }
+//       return 0;
+//     } else {
+//       if (valA > valB) {
+//         return -1;
+//       }
+//       if (valA < valB) {
+//         return 1;
+//       }
+//       return 0;
+//     }
+//   });
+//   updateTableCategory();
+// };
 
 loadExpenses();
