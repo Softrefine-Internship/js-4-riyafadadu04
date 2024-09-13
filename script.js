@@ -1,5 +1,9 @@
 let expenses = [];
 let category = [];
+let currentPageExpense = 1;
+let itemsPerPageExpense = 10;
+let currentPageCategory = 1;
+let itemsPerPageCategory = 10;
 
 //--- for tab buttons ---//
 const tabButtons = document.querySelectorAll('.tablinks');
@@ -42,6 +46,7 @@ const addCategory = name => {
   const newCategory = { name };
   category.push(newCategory);
   updateTableCategory();
+  updateCategoryDropdowns();
   saveExpenses();
 };
 
@@ -49,17 +54,50 @@ const updateTableCategory = (filteredCategory = category) => {
   const categoryTable = document.querySelector('#categoryList');
   categoryTable.innerHTML = '';
 
-  filteredCategory.forEach((category, index) => {
+  const totalPages = Math.ceil(filteredCategory.length / itemsPerPageCategory);
+  const start = (currentPageCategory - 1) * itemsPerPageCategory;
+  const end = Math.min(start + itemsPerPageCategory, filteredCategory.length);
+  const pageData = filteredCategory.slice(start, end);
+
+  pageData.forEach((category, index) => {
     const newRowCat = document.createElement('tr');
     newRowCat.classList.add('body-row');
     newRowCat.innerHTML = `
-      <td class="cat-index">${index + 1}</td>
+      <td class="cat-index">${start + index + 1}</td>
       <td class="cat-name-td">${category.name}</td>
       <td class="action-del cat-action">
-        <button class="delete-btn action-btn" data-index="${index}"><i class="fa-solid fa-trash"></i></button>
-        <button class="edit-btn action-btn" data-index="${index}"><i class="fa-regular fa-pen-to-square"></i></button>
+        <button class="delete-btn action-btn" data-index="${
+          start + index
+        }"><i class="fa-solid fa-trash"></i></button>
+        <button class="edit-btn action-btn" data-index="${
+          start + index
+        }"><i class="fa-regular fa-pen-to-square"></i></button>
       </td>
     `;
+
+    document.getElementById(
+      'category-page-info'
+    ).textContent = `Page ${currentPageExpense} of ${totalPages}`;
+
+    document
+      .getElementById('prev-expense-page')
+      .addEventListener('click', () => {
+        if (currentPageExpense > 1) {
+          currentPageExpense--;
+          updateTable();
+        }
+      });
+
+    document
+      .getElementById('next-expense-page')
+      .addEventListener('click', () => {
+        const totalPages = Math.ceil(expenses.length / itemsPerPageExpense);
+        if (currentPageExpense < totalPages) {
+          currentPageExpense++;
+          updateTable();
+        }
+      });
+
     categoryTable.appendChild(newRowCat);
   });
 };
@@ -67,6 +105,7 @@ const updateTableCategory = (filteredCategory = category) => {
 const deleteCategory = index => {
   category.splice(index, 1);
   updateTableCategory();
+  updateCategoryDropdowns();
   saveExpenses();
 };
 
@@ -94,6 +133,7 @@ const editCategoryName = (index, newName, oldCategory) => {
     }
   });
   updateTableCategory();
+  updateCategoryDropdowns();
   updateTable();
   saveExpenses();
 };
@@ -110,45 +150,79 @@ categoryTable.addEventListener('click', e => {
   }
 });
 
-
-
 //--- for expense form category dynamically---//
-document.addEventListener('DOMContentLoaded', () => {
+
+const updateCategoryDropdowns = () => {
   const expCatSelect = document.querySelector('.expenseCategorySelect');
+  const filterDropdown = document.querySelector('#filterExpence');
+
+  expCatSelect.innerHTML =
+    '<option value="" disabled selected>Select Category</option>';
+  filterDropdown.innerHTML = `<option value="" disabled selected>Select Expense Category</option>
+                <option value="all">All</option>`;
+
   category.forEach(category => {
     const newOption = document.createElement('option');
     newOption.value = category.name;
     newOption.textContent = category.name;
     expCatSelect.appendChild(newOption);
+
+    const newFilterOption = document.createElement('option');
+    newFilterOption.value = category.name;
+    newFilterOption.textContent = category.name;
+    filterDropdown.appendChild(newFilterOption);
   });
+};
+document.addEventListener('DOMContentLoaded', () => {
+  updateCategoryDropdowns();
 });
-
-
 
 //--- for expense ---//
 const updateTable = (filteredExpenses = expenses) => {
   const expenseTable = document.querySelector('#expenseList');
   expenseTable.innerHTML = '';
 
-  filteredExpenses.forEach((expense, index) => {
+  const totalPages = Math.ceil(filteredExpenses.length / itemsPerPageExpense);
+  const start = (currentPageExpense - 1) * itemsPerPageExpense;
+  const end = Math.min(start + itemsPerPageExpense, filteredExpenses.length);
+  const pageData = filteredExpenses.slice(start, end);
+
+  pageData.forEach((expense, index) => {
     const newRow = document.createElement('tr');
     newRow.classList.add('body-row');
     newRow.innerHTML = `
-      <td>${index + 1}</td>
+      <td>${start + index + 1}</td>
       <td class='exp-td-name'>${expense.name}</td>
-      <td class='exp-td-amount'>&#x20b9; ${expense.amount}</td>
+      <td class='exp-td-amount'>${expense.amount.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+      })}</td>
       <td class='exp-td-date'>${expense.date}</td>
       <td class='exp-td-category'>${expense.category}</td>
-      <td class="action-del"><button class="delete-btn action-btn" data-index="${index}"><i class="fa-solid fa-trash"></i></button><button class="edit-btn action-btn" data-index="${index}"><i class="fa-regular fa-pen-to-square"></i></button></td>
+      <td class="action-del"><button class="delete-btn action-btn" data-index="${
+        start + index
+      }"><i class="fa-solid fa-trash"></i></button><button class="edit-btn action-btn" data-index="${
+      start + index
+    }"><i class="fa-regular fa-pen-to-square"></i></button></td>
     `;
     expenseTable.appendChild(newRow);
   });
+
+  document.getElementById(
+    'expense-page-info'
+  ).textContent = `Page ${currentPageExpense} of ${totalPages}`;
+
+  document.getElementById('prev-expense-page').disabled =
+    currentPageExpense === 1;
+  document.getElementById('next-expense-page').disabled =
+    currentPageExpense === totalPages;
 
   const totalAmount = filteredExpenses.reduce(
     (total, exp) => total + exp.amount,
     0
   );
-  document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+  document.getElementById('totalAmount').textContent =
+    totalAmount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
 };
 
 const filterDropdown = document.querySelector('#filterExpence');
@@ -159,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newOption.textContent = category.name;
     filterDropdown.appendChild(newOption);
   });
+  updateCategoryDropdowns();
 });
 filterDropdown.addEventListener('change', () => {
   const selectedCategory = filterDropdown.value;
@@ -233,31 +308,34 @@ expenseTable.addEventListener('click', e => {
   }
 });
 function openModal(index) {
-  const btn = document.querySelectorAll(".edit-btn")[index];
-  const overlay = document.querySelector(".overlay");
-  const modal = document.querySelector(".modal");
-  const updateBtn = document.querySelector("#update-expense-btn");
-  
+  const btn = document.querySelectorAll('.edit-btn')[index];
+  const overlay = document.querySelector('.overlay');
+  const modal = document.querySelector('.modal');
+  const updateBtn = document.querySelector('#update-expense-btn');
+
   const openModal = function () {
-    modal.classList.remove("hidden");
-    overlay.classList.remove("hidden");
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
   };
-  
+
   const closeModal = function () {
-    modal.classList.add("hidden");
-    overlay.classList.add("hidden");
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
   };
-  
-  btn.addEventListener("click", openModal);
+
+  btn.addEventListener('click', openModal);
   overlay.addEventListener('click', closeModal);
   updateBtn.addEventListener('click', closeModal);
 }
+
 const editExpense = index => {
   openModal(index);
   const expenseNameUpdate = document.querySelector('#expenseNameUpdate');
   const expenseAmountUpdate = document.querySelector('#expenseAmountUpdate');
   const expenseDateUpdate = document.querySelector('#expenseDateUpdate');
-  const expenseCategoryUpdate = document.querySelector('.formUpdate #expenseCategory');
+  const expenseCategoryUpdate = document.querySelector(
+    '.formUpdate #expenseCategory'
+  );
   const expenseFormUpdate = document.querySelector('#expenseFormUpdate');
 
   expenseCategoryUpdate.innerHTML = '';
@@ -280,7 +358,7 @@ const editExpense = index => {
     const newDate = expenseDateUpdate.value;
     const newCategory = expenseCategoryUpdate.value;
 
-    editExpenseName(index, newName,newAmount, newDate,newCategory);
+    editExpenseName(index, newName, newAmount, newDate, newCategory);
     closeModal();
   });
 };
@@ -317,44 +395,110 @@ function handleCategoryFilter() {
 
 handleCategoryFilter();
 
-//--------- sorting table each column in assending and decending order ----------------
-// const sortOrder = 'asc';
+// --------- sorting table each column in assending and decending order ----------------
+function dynamicSort(prop, sortOrder) {
+  return function (a, b) {
+    for (let i = 0; i < prop.length; i++) {
+      if (sortOrder === 'asc') {
+        if (a[prop] < b[prop]) return -1;
+        if (a[prop] > b[prop]) return 1;
+      } else if (sortOrder === 'desc') {
+        if (a[prop] < b[prop]) return 1;
+        if (a[prop] > b[prop]) return -1;
+      }
+    }
+    return 0;
+  };
+}
 
-// document.querySelectorAll('.sort-btn').forEach((btn, index) => {
-//   console.log(btn);
-//   btn.addEventListener('click', () => {
-//     const columnIndex = index;
-//     sortTable(columnIndex, sortOrder);
-//     sortOrder = sortOrder === 'asc'? 'desc' : 'asc';
-//     btn.classList.toggle('asc-sort', sortOrder === 'asc');
-//     btn.classList.toggle('desc-sort', sortOrder === 'desc');
-//   });
-// });
+document.addEventListener('DOMContentLoaded', () => {
+  var sortOrder = 'asc';
+  const sortExp = document.querySelectorAll('.sort-exp');
+  const sortCat = document.querySelector('.sort-cat');
 
-// const sortTable = (columnIndex, sortOrder) => {
-//   category.sort((a, b) => {
-//     const valA = a[columnIndex].toUpperCase();
-//     const valB = b[columnIndex].toUpperCase();
+  sortExp.forEach(function (sort) {
+    sort.addEventListener('click', () => {
+      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+      const columnIndex = sort.dataset.column;
+      expenses.sort(dynamicSort(columnIndex, sortOrder));
+      updateTable(expenses);
+      updateArrows(sort);
+    });
+  });
 
-//     if (sortOrder === 'asc') {
-//       if (valA < valB) {
-//         return -1;
-//       }
-//       if (valA > valB) {
-//         return 1;
-//       }
-//       return 0;
-//     } else {
-//       if (valA > valB) {
-//         return -1;
-//       }
-//       if (valA < valB) {
-//         return 1;
-//       }
-//       return 0;
-//     }
-//   });
-//   updateTableCategory();
-// };
+  sortCat.addEventListener('click', () => {
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    const columnIndexCat = sortCat.dataset.column;
+    category.sort(dynamicSort(columnIndexCat, sortOrder));
+    sortCat.classList.remove('asc', 'desc');
+    sortCat.classList.add(sortOrder);
+    updateTableCategory(category);
+  });
+
+  function updateArrows(activeHeader) {
+    sortExp.forEach(header => {
+      header.classList.remove('asc', 'desc');
+    });
+    activeHeader.classList.add(sortOrder);
+  }
+});
+
+//--------- sorting between two dates ----------------
+const sortDate = document.getElementById('SeachExpenseDateEnd');
+const filterExpensesByDate = () => {
+  const startDateInput = document.getElementById('SeachExpenseDateStart').value;
+  const endDateInput = document.getElementById('SeachExpenseDateEnd').value;
+  if (startDateInput == '') {
+    alert('Please enter start dates');
+    return;
+  }
+  const startDate = new Date(startDateInput);
+  const endDate = new Date(endDateInput);
+  if (startDate.getDate() < endDate.getDate()) {
+    const filteredExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate >= startDate && expenseDate <= endDate;
+    });
+    updateTable(filteredExpenses);
+  } else {
+    alert('Start date should be less than end date');
+    return;
+  }
+};
+
+sortDate.addEventListener('change', event => {
+  event.preventDefault();
+  filterExpensesByDate();
+});
+
+//-------------- pagination--------------
+document.getElementById('prev-expense-page').addEventListener('click', () => {
+  if (currentPageExpense > 1) {
+    currentPageExpense--;
+    updateTable();
+  }
+});
+
+document.getElementById('next-expense-page').addEventListener('click', () => {
+  const totalPages = Math.ceil(expenses.length / itemsPerPageExpense);
+  if (currentPageExpense < totalPages) {
+    currentPageExpense++;
+    updateTable();
+  }
+});
+document.getElementById('prev-cat-page').addEventListener('click', () => {
+  if (currentPageCategory > 1) {
+    currentPageCategory--;
+    updateTableCategory();
+  }
+});
+
+document.getElementById('next-cat-page').addEventListener('click', () => {
+  const totalPages = Math.ceil(category.length / itemsPerPageCategory);
+  if (currentPageCategory < totalPages) {
+    currentPageCategory++;
+    updateTableCategory();
+  }
+});
 
 loadExpenses();

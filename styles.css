@@ -23,7 +23,6 @@ body::-webkit-scrollbar {
 .container-main {
   width: 100vw;
   height: 100vh;
-  background: #edecec76;
 }
 
 .header {
@@ -31,7 +30,6 @@ body::-webkit-scrollbar {
   align-items: center;
   justify-content: space-between;
   font-size: 2rem;
-  /* padding: 1.2rem 2rem; */
   padding: 1.2rem 0;
   background-image: linear-gradient(20deg, #9d4edd, #dabfff, #9d4edd);
   color: #fff;
@@ -70,11 +68,11 @@ body::-webkit-scrollbar {
 }
 
 .form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 0.5fr;
   justify-content: space-between;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .input-grp label {
@@ -84,16 +82,38 @@ body::-webkit-scrollbar {
 .input-grp input,
 .input-grp select {
   margin-top: 1rem;
-  width: 23rem;
+  width: 93%;
   padding: 0.8rem;
   border-radius: 0.5rem;
   font-size: 1.4rem;
   border: 1px solid #ccc;
 }
 
-.catInputFiled{
-  margin-top: 1rem;
-  width: 23rem;
+.input-grp select {
+  width: 100%;
+}
+
+.input-grp-date {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.searchExpDate {
+  width: 25%;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+}
+
+.dateSpan {
+  margin: 0 0.5rem;
+  font-size: 1.4rem;
+}
+
+.catInputFiled {
+  width: 65%;
   padding: 0.8rem;
   border-radius: 0.5rem;
   font-size: 1.4rem;
@@ -102,8 +122,7 @@ body::-webkit-scrollbar {
 
 .filterExpForm {
   display: grid;
-  grid-template-columns: repeat( 2, 1fr);
-  /* flex-wrap: wrap; */
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   gap: 2rem;
   margin-bottom: 2rem;
@@ -122,7 +141,7 @@ body::-webkit-scrollbar {
 }
 
 .filterExpForm select {
-  width: 25rem;
+  width: 65%;
   padding: 0.8rem;
   border-radius: 0.5rem;
   font-size: 1.4rem;
@@ -148,7 +167,7 @@ body::-webkit-scrollbar {
   margin: 0 auto;
 }
 
-.input-grp-filter{
+.input-grp-filter {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -161,7 +180,7 @@ body::-webkit-scrollbar {
   top: 0;
   left: 0;
   z-index: 10;
-  backdrop-filter: blur(.5rem);
+  backdrop-filter: blur(0.5rem);
 }
 
 .modal {
@@ -175,11 +194,11 @@ body::-webkit-scrollbar {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-  width: 40%;
-  /* animation: ani .5s; */
+  width: 50%;
 }
 
-.formUpdate-input-grp input, .formUpdate-input-grp select{
+.formUpdate-input-grp input,
+.formUpdate-input-grp select {
   width: 96%;
   padding: 0.8rem;
   border-radius: 0.5rem;
@@ -189,7 +208,7 @@ body::-webkit-scrollbar {
   margin-top: 1rem;
 }
 
-.formUpdate-input-grp select{
+.formUpdate-input-grp select {
   width: 100%;
 }
 
@@ -199,7 +218,6 @@ body::-webkit-scrollbar {
 
 .modal-container {
   width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -238,7 +256,7 @@ body::-webkit-scrollbar {
 .table-head th,
 .body-row td {
   border: 0.1rem solid #989898;
-  padding: 1.2rem;
+  padding: 1rem;
   font-size: 1.4rem;
   text-align: center;
 }
@@ -246,6 +264,30 @@ body::-webkit-scrollbar {
 .table-head th {
   background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
   color: #fff;
+  cursor: pointer;
+}
+
+.arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.page-text {
+  font-size: 1.2rem;
+  margin: 0 0.8rem;
+}
+
+.asc .arrow {
+  border-bottom: 5px solid #ffffff;
+}
+
+.desc .arrow {
+  border-top: 5px solid #ffffff;
 }
 
 .cat-action {
@@ -261,31 +303,45 @@ body::-webkit-scrollbar {
   text-align: left;
   margin-top: 2rem;
 }
-
+.gradiant-btn {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.5s;
+}
 .add-btn {
-  margin-top: 2.5rem;
-  padding: 0.8rem 1.6rem;
-  font-size: 1.4rem;
-  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.5s;
+  align-self: end;
 }
-.add-btn-cat {
-  padding: 0.8rem 1.6rem;
-  font-size: 1.4rem;
-  background-image: linear-gradient(to bottom, #cfaffc, #9d4edd);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.5s;
+
+.update-btn {
+  margin-top: 1.5rem;
 }
-.add-btn:hover {
+
+.gradiant-btn:hover {
   background-image: linear-gradient(to bottom, #9d4edd, #9d4edd);
-  transform: scale(1.05);
+  transform: scale(1.02);
+}
+.form-cat {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.catInputAdd,
+.catNameSearch {
+  width: 30rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+  margin-right: 1rem;
+}
+.label-cat {
+  font-size: 1.4rem;
 }
 .action-btn {
   padding: 0.8rem 1.6rem;
@@ -297,13 +353,29 @@ body::-webkit-scrollbar {
   color: #fff;
 }
 
-.delete-btn {
+.delete-btn,
+.cancel-btn {
   background-color: #e74c3c;
   margin-right: 1rem;
 }
 
 .edit-btn {
   background-color: #0ff10f;
+}
+
+.save-btn {
+  background-color: #3498db;
+}
+
+.hidden {
+  display: none;
+}
+
+.cat-index {
+  width: 10rem;
+}
+.cat-action {
+  width: 30rem;
 }
 
 @media only screen and (max-width: 75em) {
@@ -313,9 +385,17 @@ body::-webkit-scrollbar {
 }
 
 @media only screen and (max-width: 64em) {
-  .input-grp input,
-  .input-grp select {
-    width: 16rem;
+  .catInputFiled {
+    width: 60%;
+  }
+  .filterExpForm select {
+    width: 60%;
+  }
+  .searchExpDate {
+    width: 22%;
+  }
+  .dateSpan {
+    margin: 0 0.1rem;
   }
 }
 
@@ -323,31 +403,30 @@ body::-webkit-scrollbar {
   html {
     font-size: 43.7%;
   }
-  .grid-input-l {
-    width: 48%;
+  .add-btn {
+    border-radius: 0.5rem;
   }
-  .grid-input-s {
-    width: 38%;
+  .filterExpForm {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .input-grp input,
-  .input-grp select {
-    width: 93%;
+  .input-grp-date {
+    grid-column: span 2;
+  }
+  .searchExpDate {
+    width: 25%;
+  }
+  .cat-action {
+    width: 25rem;
   }
 }
 
 @media only screen and (max-width: 34.36em) {
-  .input-grp {
-    width: 100%;
-  }
-  .input-grp input {
-    width: 96.5%;
-  }
-  .input-grp select {
-    width: 100%;
+  .form {
+    grid-template-columns: 1fr 1fr;
   }
   .add-btn {
-    margin-top: 0;
     width: 100%;
+    grid-column: span 2;
   }
   .table-head th,
   .body-row td {
@@ -358,9 +437,6 @@ body::-webkit-scrollbar {
     padding: 0.6rem 1rem;
     font-size: 1rem;
   }
-  .filterExpForm select {
-    width: 22.3rem;
-  }
   .header--name {
     font-size: 3rem;
   }
@@ -369,31 +445,60 @@ body::-webkit-scrollbar {
     padding-right: 1.8rem;
   }
   .tablinks {
-    padding: 0.3rem .8rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 0.3rem;
   }
   .main {
     padding: 8rem 2rem 4rem 2rem;
+  }
+  .input-grp-filter {
+    flex-direction: column;
+    align-items: start;
+  }
+  .filterExpForm select {
+    width: 98%;
+  }
+  .catInputFiled {
+    width: 93%;
+  }
+  .searchExpDate {
+    width: 29%;
+  }
+  .catInputAdd,
+  .catNameSearch {
+    width: 20rem;
+    padding: 0.5rem;
+  }
+  .cat-action {
+    width: 12rem;
+  }
+  .edit-input {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .submit-btn {
+    font-size: 0.7rem;
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.4rem;
+  }
 }
-.filterExpForm {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  /* flex-wrap: wrap; */
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-}
-
 
 @media only screen and (max-width: 23.43em) {
+  html {
+    font-size: 31.32%;
+  }
+  .input-grp input,
+  .input-grp select {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
   .table-head th,
   .body-row td {
     font-size: 1.1rem;
     padding: 0.4rem 1rem;
   }
   .action-btn {
-    font-size: .8rem;
+    font-size: 0.8rem;
     padding: 0.5rem 0.8rem;
     border-radius: 0.3rem;
   }
@@ -409,10 +514,7 @@ body::-webkit-scrollbar {
   }
   .tablinks {
     font-size: 1.4rem;
-    padding: 0.3rem .8rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 0.3rem;
   }
-  .catInputFiled {
-    width: 21rem;
-}
 }

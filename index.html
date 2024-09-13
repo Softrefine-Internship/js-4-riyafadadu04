@@ -60,13 +60,13 @@
                 <option value="" disabled selected>Select Category</option>
               </select>
             </div>
-            <button type="submit" id="add-expense-btn" class="add-btn">
+            <button type="submit" id="add-expense-btn" class="add-btn gradiant-btn">
               Add Expense
             </button>
           </form>
           <form class="filterExpForm">
             <div class="input-grp-filter cat-input-form">
-              <label for="filterExpence">Filter Expense By Category:</label>
+              <label for="filterExpence">Filter Category:</label>
               <select
                 name="inputExpence"
                 id="filterExpence"
@@ -76,9 +76,9 @@
                 <option value="all">All</option>
               </select>
             </div>
-            <div class="input-grp-search ">
+            <div class="input-grp-search input-grp-filter">
               <label for="searchExpense" class="catInputLable"
-                >Search Expense By Name:</label
+                >Search Name:</label
               >
               <input
                 type="text"
@@ -87,49 +87,60 @@
                 placeholder="Search Expense name"
               />
             </div>
+            <div class="input-grp-date">
+              <label for="expenseDate">Search Dates:</label> 
+              <input type="date" id="SeachExpenseDateStart" class="searchExpDate" required /> <span class="dateSpan">To</span>
+              <input type="date" id="SeachExpenseDateEnd" class="searchExpDate" required />
+            </div>
           </form>
           <table class="table" id="expenseTable">
             <thead>
               <tr class="table-head">
-                <th>No.</th>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Category</th>
+                <th class="exp-td-no sort-exp">No.</th>
+                <th class="exp-td-name sort-exp" data-column="name">Name <span class="arrow"></span></th>
+                <th class="exp-td-amount sort-exp" data-column="amount">Amount <span class="arrow"></span></th>
+                <th class="exp-td-date sort-exp" data-column="date">Date <span class="arrow"></span></th>
+                <th class="exp-td-category sort-exp" data-column="category">Category <span class="arrow"></span></th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody id="expenseList" class="table-body"></tbody>
           </table>
+          <div id="expense-pagination">
+            <button id="prev-expense-page" class="page-btn gradiant-btn" disabled>&laquo; Prev</button>
+            <span id="expense-page-info" class="page-text"></span>
+            <button id="next-expense-page" class="page-btn gradiant-btn">Next &raquo;</button>
+          </div>
           <div class="total">
             <span>Total Expense Amount :</span>
-            <span>&#x20b9; </span><span id="totalAmount">0.00</span>
+            <span id="totalAmount">0.00</span>
           </div>
         </div>
         <div class="Category-container tab-content" id="Category">
-          <form class="form" id="categoryForm">
-            <div class="input-grp grid-input-l">
-              <label for="categoryName">Category Name :</label>
+          <form class="form-cat" id="categoryForm">
+            <div class="input-grp-cat grid-input-l">
+              <label for="categoryName" class="label-cat">Category Name :</label>
               <input
                 type="text"
                 id="categoryName"
                 placeholder="Category Name"
+                class="catInputAdd"
                 required
               />
             </div>
-            <button type="submit" id="add-category-btn" class="add-btn-cat">
+            <button type="submit" id="add-category-btn" class="add-btn-cat gradiant-btn">
               Add Category
             </button>
           </form>
           <form class="CategoryFilterForm">
-            <div class="input-grp cat-input-form">
-              <label for="filterCategory" class="catInputLable"
+            <div class="input-grp-cat cat-input-form">
+              <label for="filterCategory" class="catInputLable label-cat"
                 >Search Category By Name:</label
               >
               <input
                 type="text"
                 id="filterCategory"
-                class="catInputFiled"
+                class="catNameSearch"
                 placeholder="Search Category"
               />
             </div>
@@ -137,13 +148,18 @@
           <table class="table myTable" id="expenseTable">
             <thead>
               <tr class="table-head">
-                <th class="cat-index sort-btn">No.</th>
-                <th class="cat-name sort-btn">Name</th>
-                <th class="cat-action sort-btn">Action</th>
+                <th class="cat-index">No.</th>
+                <th class="cat-name sort-cat" data-column="name">Name <span class="arrow"></span></th>
+                <th class="cat-action">Action</th>
               </tr>
             </thead>
             <tbody id="categoryList" class="table-body"></tbody>
           </table>
+          <div id="category-pagination">
+            <button id="prev-cat-page" class="page-btn gradiant-btn" disabled>&laquo; Prev</button>
+            <span id="category-page-info" class="page-text"></span>
+            <button id="next-cat-page" class="page-btn gradiant-btn">Next &raquo;</button>
+          </div>
         </div>
         <div class="modal-container">
           <div class="modal hidden">
@@ -182,7 +198,7 @@
                   <option value="" disabled selected>Select Category</option>
                 </select>
               </div>
-              <button type="submit" id="update-expense-btn" class="add-btn">
+              <button type="submit" id="update-expense-btn" class="update-btn gradiant-btn">
                 Update Expense
               </button>
             </form>
